@@ -1,11 +1,9 @@
-// c++ stdlibrary
 #include <iostream>
-using std::cout;
-using std::endl;
-
-// bost library
 #include <boost/version.hpp>
 #include <boost/config.hpp>
+
+using std::cout;
+using std::endl;
 
 int main(int argc, char * argv[])
 {
