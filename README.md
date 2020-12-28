@@ -1,2 +1,2 @@
 # boost_sample
-The source code of boost stud
+The source code of boost study
