@@ -37,7 +37,7 @@ assert(wp.expired());
 assert(!wp.lock());
 ```
 
-#### 3、对象自我管理  
+##### 3、对象自我管理  
 ​	weak_ptr的一个重要用途是获得this指针的shared_ptr，使对象自己能够生产shared_ptr管理自己：对象使用weak_ptr观测this指针，这并不影响引用计数，在需要的时候就调用lock（）函数，返回一个符合要求的shared_ptr供外界使用。
 	这个解决方案是一种惯用法，在头文件＜boost/enable_shared_from_this.hpp＞里定义一个助手类enable_shared_from_this＜T＞，它的声明摘要如下：
 
