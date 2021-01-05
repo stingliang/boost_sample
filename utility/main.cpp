@@ -1,7 +1,7 @@
 /*
  * @Name: liangrui
  * @Date: 2020-12-29 16:39:10
- * @LastEditTime: 2020-12-29 20:00:31
+ * @LastEditTime: 2021-01-04 10:39:11
  */
 
 #define COUT(str) (cout << "-------------\n" \
@@ -46,6 +46,31 @@ void printStl(map<T1,T2>& m)
 {
     for(auto elem : m)
         cout << elem.first << " | " << elem.second << endl;
+}
+
+// --------------------noncopyable--------------------
+#include <boost/noncopyable.hpp>
+void noncopyableTest()
+{
+    using namespace boost;
+
+    class do_not_copy:noncopyable{};
+
+    do_not_copy _class1;
+    // 以下语句不能通过编译
+    // do_not_copy _class2 = _class1;
+    // do_not_copy _class2(_class1);
+}
+
+// --------------------unused--------------------
+#include <boost/core/ignore_unused.hpp>
+int ignore_unusedTest(int x, int y)
+{
+    using namespace boost;
+    int i;
+    ignore_unused(i, x);
+    return y;
+    // 未使用变量i和x
 }
 
 // --------------------optional--------------------
@@ -173,6 +198,15 @@ void exceptionTest()
 
 int main()
 {
+    
+    // noncopyable
+    COUT("noncopyable");
+    noncopyableTest();
+
+    // ignore_unusedTest
+    COUT("ignore_unusedTest");
+    ignore_unusedTest(1,2);
+    
     // optional
     COUT("optional");
     optionalTest();
@@ -184,4 +218,5 @@ int main()
     // exception
     COUT("exception");
     exceptionTest();
+
 }
