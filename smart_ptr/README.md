@@ -82,53 +82,53 @@ std::unique_ptr<int, myDel> p6(new int, myDel());
 
 boost库中的shared_ptr，被收纳为C++新标准中的shared_ptr，可以自由地拷贝和赋值，当没有代码在使用它时，才会自行析构。
 
-##### 基本概念
+#### 基本概念
 
-- 引用计数：顾名思义，该指针被引用的次数
+引用计数：顾名思义，该指针被引用的次数
 
-##### 构造shared_ptr
+#### 构造shared_ptr
 
-###### 空构造
+##### 空构造
 
 ```c++
 shared_ptr() // 创建一个空智能指针，其原始指针就是nullptr
 ```
 
-###### 接管原始指针
+##### 接管原始指针
 
 ```c++
 shared_ptr(T * p) // 从已有的指向T类型地指针p处接管内存，同时引用计数加一
 ```
 
-###### 接管智能指针
+##### 接管智能指针
 
 ```c++
 shared_ptr(shared_ptr conster&r) operator= 
 // 从另一个智能指针构造，引用计数加一，相当于和原来的shared_ptr共同管理一块内存
 ```
 
-###### 指定析构函数的智能指针
+##### 指定析构函数的智能指针
 
 ```c++
 shared_ptr(T * p, D d) 
 // 其构造过程类似于（2），但是使用了D d作为指定的析构函数，在后面章节会讲到
 ```
 
-##### 功能函数
+#### 功能函数
 
-###### reset()
+##### reset()
 
 将引用计数减一。它也可以带参数，参数类型和构造函数相似，相当于先将引用计数减一，再去接管另一个指针
 
-###### unique()和use_count()
+##### unique()和use_count()
 
 unique()在shared_ptr是指针的唯一所有者时为true，use_count()返回当前指针的引用计数
 
-##### 工厂函数make_shared
+#### 工厂函数make_shared
 
 make_shared()函数可以接收若干个参数，如何传递给类型T的构造函数（在构造对象时很有用），然后创建一个shared_ptr<T>的对象并返回，通常使用工厂函数创建对象比直接创建shared_ptr对象的方式更快且更高效
 
-##### 定制删除器
+#### 定制删除器
 
 shared_ptr（Y*p，Dd）的第一个参数是要被管理的指针，它的含义与其他构造函数的参数相同。而第二个参数则告诉shared_ptr在析构时不要使用delete来操作指针p，而要用d来操作，即把deletep换成d（p）
 
@@ -161,7 +161,7 @@ shared_ptr<file_t> p(s, &close_file);
 // shared_ptr<file_t> p(s, &close_file);
 ```
 
-##### 用法示例
+#### 用法示例
 
 shared_ptr被包含在
 
@@ -199,11 +199,11 @@ assert(sp3 -> size() == 10);
 
 ### “弱”指针weak_ptr
 
-​	因为它不具有普通指针的行为，没有重载operator*和-＞。它的最大作用在于协助shared_ptr工作，它只负责观测资源的使用情况。
+因为它不具有普通指针的行为，没有重载operator*和-＞。它的最大作用在于协助shared_ptr工作，它只负责观测资源的使用情况。
 
-##### 构造函数
+#### 构造函数
 
-​	weak_ptr被设计为与shared_ptr协同工作，它的构造和构造不会使shared_ptr的引用计数增加或减少，它可以从一个shared_ptr或者weak_ptr构造
+weak_ptr被设计为与shared_ptr协同工作，它的构造和构造不会使shared_ptr的引用计数增加或减少，它可以从一个shared_ptr或者weak_ptr构造
 
 ```c++
 shared_ptr<int> sp(new int(10));
@@ -214,9 +214,9 @@ assert(wp.use_count() == 1);
 assert(!wp.empty());
 ```
 
-##### 功能函数
+#### 功能函数
 
-​	weak_ptr没有重载operator*和-＞，因为它不共享指针，不能操作资源，这正是它“弱”的原因。但它可以使用一个非常重要的成员函数lock（）从被观测的shared_ptr获得一个可用的shared_ptr对象，把“弱”关系转换为“强”关系，从而操作资源。但当表示指针是否有效的expired（）==true时，lock（）函数将返回一个存储空指针的shared_ptr。
+weak_ptr没有重载operator*和-＞，因为它不共享指针，不能操作资源，这正是它“弱”的原因。但它可以使用一个非常重要的成员函数lock（）从被观测的shared_ptr获得一个可用的shared_ptr对象，把“弱”关系转换为“强”关系，从而操作资源。但当表示指针是否有效的expired（）==true时，lock（）函数将返回一个存储空指针的shared_ptr。
 
 ```c++
 // 接上例
@@ -236,10 +236,10 @@ assert(wp.expired());
 assert(!wp.lock());
 ```
 
-##### 对象自我管理  
+#### 对象自我管理  
 
-​	weak_ptr的一个重要用途是获得this指针的shared_ptr，使对象自己能够生产shared_ptr管理自己：对象使用weak_ptr观测this指针，这并不影响引用计数，在需要的时候就调用lock（）函数，返回一个符合要求的shared_ptr供外界使用。
-​	这个解决方案是一种惯用法，在头文件＜boost/enable_shared_from_this.hpp＞里定义一个助手类enable_shared_from_this＜T＞，它的声明摘要如下：
+weak_ptr的一个重要用途是获得this指针的shared_ptr，使对象自己能够生产shared_ptr管理自己：对象使用weak_ptr观测this指针，这并不影响引用计数，在需要的时候就调用lock（）函数，返回一个符合要求的shared_ptr供外界使用。
+这个解决方案是一种惯用法，在头文件＜boost/enable_shared_from_this.hpp＞里定义一个助手类enable_shared_from_this＜T＞，它的声明摘要如下：
 
 ```c++
 template<class T>
@@ -251,7 +251,7 @@ public:
 };
 ```
 
-​	使用weak_ptr的时候只需要让想被shared_ptr管理的类继承它即可，成员函数shared_from_this（）会返回this指针的shared_ptr。例如：
+使用weak_ptr的时候只需要让想被shared_ptr管理的类继承它即可，成员函数shared_from_this（）会返回this指针的shared_ptr。例如：
 
 ```c++
 class self_shared: public enable_shared_from_this<self_shared>
@@ -276,7 +276,8 @@ int main()
 }
 ```
 
-​	【注意事项】不能对一个未被shared_ptr管理的对象使用shared_from_this操作获取shared_ptr，否则会产生未定义的错误。
+> 【注意事项】不能对一个未被shared_ptr管理的对象使用shared_from_this操作获取shared_ptr，否则会产生未定义的错误。
+>
 
 ```c++
 // 错误用法
