@@ -19,7 +19,7 @@ std::unique_ptr<int> p3(new int);
 
 由此就创建出了一个 p3 智能指针，其指向的是可容纳 1 个整数的堆存储空间
 
-##### 移动构造
+##### 移动=构造
 
 ```c++
 std::unique_ptr<int> p4(new int);
@@ -138,13 +138,15 @@ shared_ptr（Y*p，Dd）的第一个参数是要被管理的指针，它的含�
 
 ```c++
 class file_t{...}; 
-// open file file_t * open_file() 
+// open file 
+file_t * open_file() 
 {    
     cout << "open file" <<endl;    
     ...    
     return new file_t; 
 } 
-// close file void close_file(file_t * s) 
+// close file 
+void close_file(file_t * s) 
 {    
     cout << "close file" <<endl;    
     ... 
