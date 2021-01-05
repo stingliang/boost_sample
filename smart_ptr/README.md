@@ -19,7 +19,7 @@ std::unique_ptr<int> p3(new int);
 
 由此就创建出了一个 p3 智能指针，其指向的是可容纳 1 个整数的堆存储空间
 
-##### 移动=构造
+##### 移动构造
 
 ```c++
 std::unique_ptr<int> p4(new int);
