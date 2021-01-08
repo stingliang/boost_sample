@@ -2,15 +2,15 @@
 
 官网下载合适版本：https://www.boost.org/
 
-此处用的是boost_1_75_0版本
+此处用的是`boost_1_75_0`版本
 
 #### 二、开发环境
 
-推荐使用GCC 7.x.x或以上编译器
+推荐使用`GCC 7.x.x`或以上编译器
 
 #### 三、安装Boost库
 
-此处采用简易安装，默认安装在/usr/local/include和/usr/local/lib下
+此处采用简易安装，默认安装在`/usr/local/include`和`/usr/local/lib`下
 
 ```shell
 # 解压

@@ -1,6 +1,6 @@
 ### “独占型”指针unique_ptr
 
-unique_ptr 指针指向的堆内存无法同其它 unique_ptr 共享，每个 unique_ptr 指针都独自拥有对其所指堆内存空间的所有权，被定义在头文件<memory>中，并且使用std命名空间
+unique_ptr 指针指向的堆内存无法同其它 unique_ptr 共享，每个 unique_ptr 指针都独自拥有对其所指堆内存空间的所有权，被定义在头文件`<memory>`中，并且使用std命名空间
 
 #### 构造unique_ptr
 
@@ -27,7 +27,7 @@ std::unique_ptr<int> p4(new int);
 std::unique_ptr<int> p5(std::move(p4));//正确，调用移动构造函数
 ```
 
-对于调用移动构造函数的 p4 和 p5 来说，p5 将获取 p4 所指堆空间的所有权，而 p4 将变成空指针（nullptr）
+对于调用移动构造函数的 p4 和 p5 来说，p5 将获取 p4 所指堆空间的所有权，而 p4 将变成空指针`(nullptr)`
 
 #### 功能函数
 
@@ -37,7 +37,7 @@ std::unique_ptr<int> p5(std::move(p4));//正确，调用移动构造函数
 
 ##### reset(p)
 
-其中p表示一个普通指针，如果p为nullptr，则当前unique_ptr也变成空指针；反之，则该函数会释放当前unique_ptr指针指向的堆内存（如果有），然后获取p所指堆内存的所有权（p为nullptr）
+其中p表示一个普通指针，如果p为nullptr，则当前unique_ptr也变成空指针；反之，则该函数会释放当前unique_ptr指针指向的堆内存（如果有），然后获取p所指堆内存的所有权（p为`nullptr`）
 
 #### 工厂函数
 
@@ -52,7 +52,7 @@ assert(p && *p == 10);
 
 ##### 使用boost库中的make_unique
 
-首先需要包含头文件＜boost/smart_ptr/make_unique.hpp＞，使用命名空间boost
+首先需要包含头文件`＜boost/smart_ptr/make_unique.hpp＞`，使用命名空间`boost`
 
 ```c++
 #include <boost/smart_ptr/make_unique.hpp>
@@ -63,7 +63,7 @@ assert(p && *p == 10);
 
 #### 定制删除器
 
- 默认情况下，unique_ptr指针采用std::default_delete<T>方法释放堆内存,也可以自定义符合实际场景的释放规则,和 shared_ptr 指针不同，为 unique_ptr 自定义释放规则，只能采用函数对象的方式。例如：
+ 默认情况下，unique_ptr指针采用`std::default_delete<T>`方法释放堆内存,也可以自定义符合实际场景的释放规则,和 shared_ptr 指针不同，为 unique_ptr 自定义释放规则，只能采用函数对象的方式。例如：
 //自定义的释放规则
 
 ```c++
@@ -122,17 +122,17 @@ shared_ptr(T * p, D d)
 
 ##### unique()和use_count()
 
-unique()在shared_ptr是指针的唯一所有者时为true，use_count()返回当前指针的引用计数
+`unique()`在shared_ptr是指针的唯一所有者时为true，`use_count()`返回当前指针的引用计数
 
 #### 工厂函数make_shared
 
-make_shared()函数可以接收若干个参数，如何传递给类型T的构造函数（在构造对象时很有用），然后创建一个shared_ptr<T>的对象并返回，通常使用工厂函数创建对象比直接创建shared_ptr对象的方式更快且更高效
+`make_shared()`函数可以接收若干个参数，如何传递给类型T的构造函数（在构造对象时很有用），然后创建一个`shared_ptr<T>`的对象并返回，通常使用工厂函数创建对象比直接创建shared_ptr对象的方式更快且更高效
 
 #### 定制删除器
 
-shared_ptr（Y*p，Dd）的第一个参数是要被管理的指针，它的含义与其他构造函数的参数相同。而第二个参数则告诉shared_ptr在析构时不要使用delete来操作指针p，而要用d来操作，即把deletep换成d（p）
+`shared_ptr(Y*p，Dd)`的第一个参数是要被管理的指针，它的含义与其他构造函数的参数相同。而第二个参数则告诉shared_ptr在析构时不要使用delete来操作指针p，而要用d来操作，即把deletep换成d（p）
 
-在这里删除器d可以是一个函数对象，也可以是一个函数指针，只要它能够像函数那样被调用，使得d（p）成立即可。对删除器的要求是它必须可拷贝，其行为也必须像delete那样，不能抛出异常。为了配合删除器的工作，shared_ptr提供一个自由函数get_deleter（），它能够返回内部的删除器指针。有了删除器的概念，我们就可以用shared_ptr实现管理任意资源。只要这种资源提供了它自己的释放操作，shared_ptr就能够保证它自动释放。
+在这里删除器d可以是一个函数对象，也可以是一个函数指针，只要它能够像函数那样被调用，使得d（p）成立即可。对删除器的要求是它必须可拷贝，其行为也必须像delete那样，不能抛出异常。为了配合删除器的工作，shared_ptr提供一个自由函数`get_deleter()`，它能够返回内部的删除器指针。有了删除器的概念，我们就可以用shared_ptr实现管理任意资源。只要这种资源提供了它自己的释放操作，shared_ptr就能够保证它自动释放。
 
 举例：假设有一组文件操作函数，使用file_t:
 
@@ -153,7 +153,7 @@ void close_file(file_t * s)
 }
 ```
 
-那么对文件指针的释放操作就应该是close_file()，而不是delete，在这里，删除器close_socket（）是一个自由函数，因此只需要把函数名传递给shared_ptr即可。也可以在函数名前加上取地址操作符“&”，其效果是等价的：
+那么对文件指针的释放操作就应该是close_file()，而不是delete，在这里，删除器`close_socket()`是一个自由函数，因此只需要把函数名传递给shared_ptr即可。也可以在函数名前加上取地址操作符“&”，其效果是等价的：
 
 ```c++
 file_t * s = open_socket(); 
@@ -172,7 +172,7 @@ shared_ptr被包含在
 using namespace boost;
 ```
 
-shared_ptr()可以在任何情况下接手new的分配结果，其也提供基本的线程安全访问，可以被多个线程安全地读取
+`shared_ptr()`可以在任何情况下接手new的分配结果，其也提供基本的线程安全访问，可以被多个线程安全地读取
 
 ```c++
 // 接管原始指针
@@ -201,7 +201,7 @@ assert(sp3 -> size() == 10);
 
 ### “弱”指针weak_ptr
 
-因为它不具有普通指针的行为，没有重载operator*和-＞。它的最大作用在于协助shared_ptr工作，它只负责观测资源的使用情况。
+因为它不具有普通指针的行为，没有重载operator`*`和`-＞`。它的最大作用在于协助shared_ptr工作，它只负责观测资源的使用情况。
 
 #### 构造函数
 
@@ -218,7 +218,7 @@ assert(!wp.empty());
 
 #### 功能函数
 
-weak_ptr没有重载operator*和-＞，因为它不共享指针，不能操作资源，这正是它“弱”的原因。但它可以使用一个非常重要的成员函数lock（）从被观测的shared_ptr获得一个可用的shared_ptr对象，把“弱”关系转换为“强”关系，从而操作资源。但当表示指针是否有效的expired（）==true时，lock（）函数将返回一个存储空指针的shared_ptr。
+weak_ptr没有重载operator`*`和`-＞`，因为它不共享指针，不能操作资源，这正是它“弱”的原因。但它可以使用一个非常重要的成员函数`lock()`从被观测的shared_ptr获得一个可用的shared_ptr对象，把“弱”关系转换为“强”关系，从而操作资源。但当表示指针是否有效的`expired()==true`时，`lock()`函数将返回一个存储空指针的shared_ptr。
 
 ```c++
 // 接上例
@@ -240,8 +240,8 @@ assert(!wp.lock());
 
 #### 对象自我管理  
 
-weak_ptr的一个重要用途是获得this指针的shared_ptr，使对象自己能够生产shared_ptr管理自己：对象使用weak_ptr观测this指针，这并不影响引用计数，在需要的时候就调用lock（）函数，返回一个符合要求的shared_ptr供外界使用。
-这个解决方案是一种惯用法，在头文件＜boost/enable_shared_from_this.hpp＞里定义一个助手类enable_shared_from_this＜T＞，它的声明摘要如下：
+weak_ptr的一个重要用途是获得this指针的shared_ptr，使对象自己能够生产shared_ptr管理自己：对象使用weak_ptr观测this指针，这并不影响引用计数，在需要的时候就调用`lock()`函数，返回一个符合要求的shared_ptr供外界使用。
+这个解决方案是一种惯用法，在头文件`＜boost/enable_shared_from_this.hpp＞`里定义一个助手类`enable_shared_from_this＜T＞`，它的声明摘要如下：
 
 ```c++
 template<class T>
@@ -253,7 +253,7 @@ public:
 };
 ```
 
-使用weak_ptr的时候只需要让想被shared_ptr管理的类继承它即可，成员函数shared_from_this（）会返回this指针的shared_ptr。例如：
+使用weak_ptr的时候只需要让想被shared_ptr管理的类继承它即可，成员函数`shared_from_this()`会返回this指针的shared_ptr。例如：
 
 ```c++
 class self_shared: public enable_shared_from_this<self_shared>
