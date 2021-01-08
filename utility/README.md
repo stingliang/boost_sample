@@ -311,7 +311,7 @@ push_front(d).range(v1.begin(), v1.begin() + 5);
 
 ***
 
-### eexception
+### exception
 
 #### 作用
 
